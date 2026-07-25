@@ -1,4 +1,4 @@
-# Lab 5 – Securing a WLAN with WPA2 Enterprise
+# Lab – Securing a WLAN with WPA2 Enterprise
 
 ## Context and Objectives
 
@@ -52,6 +52,8 @@ The promotion wizard offers the option to add a new forest.
 
 Ignore DNS warnings and proceed. The server reboots automatically; log on with `EXAMPLE\Administrator`.
 
+![Description de l'image](./images/image1.png)
+
 ### 1.4 Create Users in the Directory
 
 From **Active Directory Users and Computers** (`example.local` > `Users`):
@@ -66,7 +68,13 @@ Still in **Active Directory Users and Computers**:
 - Create a new group named **WLAN-Users** (scope *Global*, type *Security*).
 - Add `student1` and `student2` as members.
 
+![Description de l'image](./images/image2.png)
+
+![Description de l'image](./images/image3.png)
+
 ---
+
+
 
 ## Part 1 (continued) – Installing the Certification Authority (CA)
 
@@ -77,9 +85,13 @@ Network configuration:
 - DNS: `172.20.10.1`
 - Rename the machine to `CA-Server`.
 
+![Description de l'image](./images/image4.png)
+
 ### 1.7 Join the Domain
 
 Via **Server Manager** > **Local Server** > **Workgroup**, change the membership to the `example.local` domain (credentials `EXAMPLE\Administrator`). Reboot the server.
+
+![Description de l'image](./images/image5.png)
 
 ### 1.8 Install the AD CS Role
 
@@ -105,6 +117,9 @@ In the **Certification Authority** console (`example-CA` > **Certificate Templat
 - **Security** tab: add the **WLAN-Users** group and grant *Read*, *Enroll*, and *Autoenroll* permissions.
 - Publish the template by right‑clicking **Certificate Templates** > **New > Certificate Template to Issue** > `WLAN-User-Cert`.
 
+  ![Description de l'image](./images/image6.png)
+  ![Description de l'image](./images/image7.png)
+
 ---
 
 ## Part 2 – Configuring the NPS / RADIUS Server 
@@ -129,6 +144,8 @@ In the NPS console, under **RADIUS Clients and Servers**:
   - **Friendly name:** `AP-SecureWLAN`
   - **Address:** IP address of the access point 
   - **Shared Secret:** `MonSecret123` (must be configured identically on the AP)
+ 
+    ![Description de l'image](./images/image8.png)
 
 ### 2.5 Network Policy for EAP‑TLS
 
@@ -146,6 +163,8 @@ Create a second policy:
 - **Condition:** *Windows Groups* → `WLAN-Users`
 - **Access permission:** *Access granted*
 - **Authentication methods:** add **Microsoft: Protected EAP (PEAP)**, edit it to ensure the inner authentication method is **EAP‑MSCHAPv2**.
+
+![Description de l'image](./images/image9.png)
 
 ### 2.7 Obtain a Server Certificate for NPS
 
@@ -173,6 +192,10 @@ Using a web browser, connect to the AP’s administration IP address .
   - **Shared Secret:** `MonSecret123`
 
 Apply and save the configuration.
+
+![Description de l'image](./images/image10.png)
+![Description de l'image](./images/image11.png)
+![Description de l'image](./images/image12.png)
 
 ---
 
@@ -235,6 +258,9 @@ Observable exchanges include *Access‑Request / Access‑Accept* pairs and EAP�
 **Summary of the authentication flow:**  
 `Client` → EAP‑Request → `AP` → RADIUS Access‑Request → `NPS` → AD verification → RADIUS Access‑Accept → `AP` → connection granted → `Client`
 
+![Description de l'image](./images/image13.png)
+![Description de l'image](./images/image14.png)
+![Description de l'image](./images/image15.png)
+
 ---
 
-*This documentation was produced for educational purposes. The passwords and shared secrets used here do not comply with security best practices and must be adapted for any production environment.*
