@@ -195,7 +195,7 @@ Apply and save the configuration.
 
 ![Description de l'image](./images/image10.png)
 ![Description de l'image](./images/image11.png)
-![Description de l'image](./images/image12.png)
+
 
 ---
 
